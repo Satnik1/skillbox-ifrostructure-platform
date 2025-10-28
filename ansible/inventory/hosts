@@ -1,0 +1,5 @@
+[all]
+158.160.122.98 ansible_user=ubuntu 
+
+[all:vars]
+ansible_ssh_common_args='-o StrictHostKeyChecking=no'

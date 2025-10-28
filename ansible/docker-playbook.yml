@@ -1,0 +1,5 @@
+- hosts: all
+  become: yes
+  roles:
+    - ansible-role-docker-7.0.0
+

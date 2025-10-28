@@ -1,0 +1,9 @@
+plugin:  cloud.terraform.terraform_provider
+projects:
+  - name: my_project
+    state_file: ../../terraform/terraform.tfstate
+    hostnames:
+      - "yandex_compute_instance.*"
+    variables:
+      ansible_user: ubuntu
+      ansible_ssh_private_key: ~/.ssh/timeweb
