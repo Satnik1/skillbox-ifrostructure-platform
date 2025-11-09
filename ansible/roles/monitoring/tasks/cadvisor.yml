@@ -1,0 +1,13 @@
+---
+- name: Create cAdvisor unit file
+  template:
+    src: cadvisor-unit.service.j2
+    dest: /etc/systemd/system/cadvisor-unit.service
+  
+
+- name: Ensure cAdvisor service is running
+  systemd:
+    name: cadvisor-unit.service
+    state: restarted
+    enabled: true
+    daemon_reload: true

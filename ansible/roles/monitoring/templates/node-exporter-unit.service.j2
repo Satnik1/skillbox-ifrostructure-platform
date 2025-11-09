@@ -1,0 +1,21 @@
+[Unit]
+Description=node exporter
+Requires=docker.service
+After=docker.service
+ 
+[Service]
+Restart=always
+ExecStartPre=-/usr/bin/docker rm node-exporter
+ExecStart=/usr/bin/docker run \
+  --rm \
+  --publish={{ service_ports.node_exporter }}:9100 \
+  --memory=64m \
+  --volume="/proc:/host/proc:ro" \
+  --volume="/sys:/host/sys:ro" \
+  --volume="/:/rootfs:ro" \
+  --name=node-exporter \
+  {{ docker_images.node_exporter }}
+ExecStop=/usr/bin/docker stop -t 10 node-exporter
+ 
+[Install]
+WantedBy=multi-user.target

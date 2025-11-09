@@ -1,0 +1,21 @@
+---
+# tasks file for monitoring
+- name: Deploy Node Exporter
+  include_tasks: node-exporter.yml
+  when: deploy_node | default(false)
+
+- name: Deploy cAdvisor
+  include_tasks: cadvisor.yml
+  when: deploy_cadvisor | default(false)
+
+- name: Deploy Blackbox Exporter
+  include_tasks: blackbox-exporter.yml
+  when: deploy_blackbox | default(false)
+
+- name: Deploy Prometheus
+  include_tasks: prometheus.yml
+  when: deploy_prometheus | default(false)
+
+- name: Deploy Grafana
+  include_tasks: grafana.yml
+  when: deploy_grafana | default(false)

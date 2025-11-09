@@ -1,0 +1,11 @@
+[app_server]
+app_int ansible_host=
+app_ext ansible_host=
+
+[monitoring_server] 
+monitoring_ext ansible_host=        
+monitoring_int ansible_host=
+
+[all:vars]
+ansible_user=ubuntu
+ansible_ssh_common_args='-o StrictHostKeyChecking=no'

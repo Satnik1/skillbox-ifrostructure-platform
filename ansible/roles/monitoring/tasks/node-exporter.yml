@@ -1,0 +1,13 @@
+---
+- name: Create node-exporter unit file
+  template:
+    src: node-exporter-unit.service.j2
+    dest: /etc/systemd/system/node-exporter-unit.service
+  
+
+- name: Ensure node-exporter service is running
+  systemd:
+    name: node-exporter-unit.service
+    state: restarted
+    enabled: true
+    daemon_reload: true

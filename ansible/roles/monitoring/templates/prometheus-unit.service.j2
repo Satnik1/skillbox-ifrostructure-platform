@@ -1,0 +1,22 @@
+[Unit]
+Description=prometheus
+Requires=docker.service
+After=docker.service
+ 
+[Service]
+Restart=always
+ExecStartPre=-/usr/bin/docker rm prometheus
+ExecStart=/usr/bin/docker run \
+  --publish={{ service_ports.prometheus }}:9090 \
+  --memory=2048m \
+  --volume=/opt/prometheus/conf:/etc/prometheus/ \
+  --volume=/opt/prometheus/data:/prometheus/ \
+  --name=prometheus \
+  {{ docker_images.prometheus }} \
+  --config.file=/etc/prometheus/prometheus.yml \
+  --storage.tsdb.path=/prometheus \
+  --storage.tsdb.retention.time=14d
+ExecStop=/usr/bin/docker stop -t 10 prometheus
+ 
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,17 @@
+[Unit]
+Description=blackbox exporter
+Requires=docker.service
+After=docker.service
+ 
+[Service]
+Restart=always
+ExecStartPre=-/usr/bin/docker rm blackbox-exporter
+ExecStart=/usr/bin/docker run \
+  --publish={{ service_ports.blackbox_exporter }}:9115 \
+  --memory=64m \
+  --name=blackbox-exporter \
+  {{ docker_images.blackbox_exporter }}
+ExecStop=/usr/bin/docker stop -t 10 blackbox-exporter
+
+[Install]
+WantedBy=multi-user.target

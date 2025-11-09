@@ -1,5 +1,5 @@
-resource "yandex_compute_instance" "sna-vm-1" {
-  name        = "project-vm-1"
+resource "yandex_compute_instance" "sna-vm-2" {
+  name        = "prometheus-vm-1"
   platform_id = "standard-v1"
   zone        = "ru-central1-a"
 
@@ -24,10 +24,10 @@ resource "yandex_compute_instance" "sna-vm-1" {
     
   }
 }
-output "internal_ip_address_vm_project" {
-  value = yandex_compute_instance.sna-vm-1.network_interface.0.ip_address
+output "internal_ip_address_vm_prometheus" {
+  value = yandex_compute_instance.sna-vm-2.network_interface.0.ip_address
 }
 
-output "external_ip_address_vm_project" {
-  value = yandex_compute_instance.sna-vm-1.network_interface.0.nat_ip_address
+output "external_ip_address_vm_prometheus" {
+  value = yandex_compute_instance.sna-vm-2.network_interface.0.nat_ip_address
 }

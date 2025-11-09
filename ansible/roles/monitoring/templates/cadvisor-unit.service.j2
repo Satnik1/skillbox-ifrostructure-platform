@@ -1,0 +1,23 @@
+[Unit]
+Description=cadvisor
+Requires=docker.service
+After=docker.service
+ 
+[Service]
+Restart=always
+ExecStartPre=-/usr/bin/docker rm cadvisor
+ExecStart=/usr/bin/docker run \
+  --publish={{ service_ports.cadvisor }}:8080 \
+  --volume=/:/rootfs:ro \
+  --volume=/var/run:/var/run:ro \
+  --volume=/sys:/sys:ro \
+  --volume=/var/lib/docker/:/var/lib/docker:ro \
+  --volume=/dev/disk/:/dev/disk:ro \
+  --privileged=true \
+  --name=cadvisor \
+  {{ docker_images.cadvisor }}
+ 
+ExecStop=/usr/bin/docker stop -t 10 cadvisor
+ 
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,31 @@
+---
+- name: Directories for conf prometheus
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "65534"
+    group: "65534"
+    mode: "0755"
+  loop:
+    - /opt/prometheus/data
+    - /opt/prometheus/conf
+
+- name: Conf file
+  template:
+    src: prometheus.yml.j2
+    dest: /opt/prometheus/conf/prometheus.yml
+    owner: "65534"
+    group: "65534"
+    mode: '0644'
+
+- name: Create prometheus unit file
+  template:
+    src: prometheus-unit.service.j2
+    dest: /etc/systemd/system/prometheus-unit.service
+
+- name: Ensure prometheus service is running
+  systemd:
+    name: prometheus-unit.service
+    state: restarted
+    enabled: true
+    daemon_reload: true

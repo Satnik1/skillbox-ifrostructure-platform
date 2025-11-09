@@ -1,0 +1,19 @@
+[Unit]
+Description=grafana
+Requires=docker.service
+After=docker.service
+ 
+[Service]
+Restart=always
+ExecStartPre=-/usr/bin/docker rm grafana
+ExecStart=/usr/bin/docker run \
+  --memory=1024m \
+  --network=host \
+  --volume=/opt/grafana/provisioning:/etc/grafana/provisioning:ro \
+  --volume=/opt/grafana/data:/var/lib/grafana \
+  --name=grafana \
+  {{ docker_images.grafana }}
+ExecStop=/usr/bin/docker stop -t 10 grafana
+ 
+[Install]
+WantedBy=multi-user.target

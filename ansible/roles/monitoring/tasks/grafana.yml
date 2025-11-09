@@ -1,0 +1,53 @@
+---
+- name: Create directories fo Grafana
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "472"
+    group: "472"
+    mode: "0755"
+  loop:
+    - /opt/grafana/data
+    - /opt/grafana/provisioning/dashboards
+    - /opt/grafana/provisioning/datasources
+
+- name: Datasource file for Grafana
+  template:
+    src: datasources/grafana_datasource.yml.j2
+    dest: /opt/grafana/provisioning/datasources/main.yml
+    owner: "472"
+    group: "472"
+    mode: "0644"
+
+- name: Dashboards file conf for Grafana
+  template:
+    src: dashboards/grafana_dashboards.yml.j2
+    dest: /opt/grafana/provisioning/dashboards/main.yml
+    owner: "472"
+    group: "472"
+    mode: "0644"
+
+- name: Download dashboards
+  get_url:
+    url: "{{ item.url }}"
+    dest: /opt/grafana/provisioning/dashboards/{{ item.name }}
+    owner: "472"
+    group: "472"
+    mode: '0644'
+  loop:
+    - { name: "node-exporter.json", url: "https://grafana.com/api/dashboards/1860/revisions/42/download" }
+    - { name: "cadvisor.json", url: "https://grafana.com/api/dashboards/14282/revisions/1/download" }
+    - { name: "blackbox.json", url: "https://grafana.com/api/dashboards/13659/revisions/1/download" }
+
+- name: Create Grafana unit file
+  template:
+    src: grafana-unit.service.j2
+    dest: /etc/systemd/system/grafana-unit.service
+  
+
+- name: Ensure grafana service is running
+  systemd:
+    name: grafana-unit.service
+    state: restarted
+    enabled: true
+    daemon_reload: true

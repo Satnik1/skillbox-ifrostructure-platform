@@ -1,0 +1,13 @@
+---
+- name: Create blackbox unit file
+  template:
+    src: blackbox-unit.service.j2
+    dest: /etc/systemd/system/blackbox-unit.service
+  
+
+- name: Ensure blackbox service is running
+  systemd:
+    name: blackbox-unit.service
+    state: restarted
+    enabled: true
+    daemon_reload: true
