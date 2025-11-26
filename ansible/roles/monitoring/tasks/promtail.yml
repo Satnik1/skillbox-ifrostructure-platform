@@ -1,0 +1,64 @@
+---
+- name: Create promtail user
+  user: 
+    name: promtail
+    system: true
+    shell: /bin/false
+    home: /opt/promtail
+    groups: adm
+    append: true    
+- name: Create dir for promtail
+  file:
+    path: /opt/promtail
+    state: directory
+    mode: "0755"
+    owner: promtail
+    group: promtail
+
+- name: Download promtail
+  get_url:
+    url: https://github.com/grafana/loki/releases/download/v3.5.6/promtail-linux-amd64.zip
+    dest: /opt/promtail/
+
+- name: Install unzip package
+  package:
+    name: unzip
+    state: present
+
+- name: Unzip promtail
+  unarchive:
+    src: /opt/promtail/promtail-linux-amd64.zip
+    dest: /opt/promtail/
+    owner: promtail
+    group: promtail
+    remote_src: true
+
+- name: Set executable permissions
+  file:
+    path: /opt/promtail/promtail-linux-amd64
+    mode: '0755'
+    owner: promtail
+    group: promtail
+
+- name: Remove archive
+  file: 
+    path: /opt/promtail/promtail-linux-amd64.zip
+    state: absent
+
+- name: Create cofig for promtail
+  template:
+    src: promtail-local-config.yaml.j2
+    dest: /opt/promtail/promtail-local-config.yaml
+
+- name: Create unit file for promtail
+  template:
+    src: promtail.service.j2
+    dest: /etc/systemd/system/promtail.service
+
+
+- name: Ensure promtail srvice is running
+  systemd:
+   name: promtail.service
+   state: restarted
+   enabled: true
+   daemon_reload: true

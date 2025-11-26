@@ -19,3 +19,11 @@
 - name: Deploy Grafana
   include_tasks: grafana.yml
   when: deploy_grafana | default(false)
+
+- name: Deploy Loki
+  include_tasks: loki.yml
+  when: deploy_loki | default(false)
+
+- name: Deploy_promtail
+  include_tasks: promtail.yml
+  when: deploy_promtail | default(false)

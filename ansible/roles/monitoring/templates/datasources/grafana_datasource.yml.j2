@@ -9,3 +9,12 @@ datasources:
     basicAuth: false
     editable: false
     url: http://localhost:9090
+  
+  - name: Loki
+    type: loki
+    version: 1
+    access: proxy
+    orgId: 1
+    basicAuth: false
+    editable: false
+    url: http://localhost:3100

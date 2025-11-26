@@ -1,0 +1,63 @@
+---
+- name: Create loki user
+  user: 
+    name: loki
+    system: true
+    shell: /bin/false
+    home: /opt/loki
+    
+- name: Create dir for loki
+  file:
+    path: /opt/loki
+    state: directory
+    mode: "0755"
+    owner: loki
+    group: loki
+
+- name: Download loki
+  get_url:
+    url: https://github.com/grafana/loki/releases/download/v3.6.2/loki-linux-amd64.zip
+    dest: /opt/loki/
+
+- name: Install unzip package
+  package:
+    name: unzip
+    state: present
+
+- name: Unzip Loki
+  unarchive:
+    src: /opt/loki/loki-linux-amd64.zip
+    dest: /opt/loki/
+    owner: loki
+    group: loki
+    remote_src: yes
+
+- name: Set executable permissions
+  file:
+    path: /opt/loki/loki-linux-amd64
+    mode: '0755'
+    owner: loki
+    group: loki
+
+- name: Remove archive
+  file: 
+    path: /opt/loki/loki-linux-amd64.zip
+    state: absent
+
+- name: Create cofig for loki
+  template:
+    src: loki-local-config.yaml.j2
+    dest: /opt/loki/loki-local-config.yaml
+
+- name: Create unit file for loki
+  template:
+    src: loki.service.j2
+    dest: /etc/systemd/system/loki.service
+
+
+- name: Ensure loki srvice is running
+  systemd:
+   name: loki.service
+   state: restarted
+   enabled: true
+   daemon_reload: true

@@ -9,6 +9,8 @@
     deploy_blackbox: true
     deploy_prometheus: false
     deploy_grafana: false
+    deploy_loki: false
+    deploy_promtail: true
 
 - name: Deploy monitoring for prometheus_grafana
   hosts: monitoring_ext
@@ -21,3 +23,5 @@
     deploy_blackbox: false
     deploy_prometheus: true
     deploy_grafana: true
+    deploy_loki: true
+    deploy_promtail: true
