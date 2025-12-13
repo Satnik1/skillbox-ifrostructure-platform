@@ -1,0 +1,6 @@
+consul_services:
+  - name: "be_version_v2"
+    id: "web server"
+    tags: ['be']
+    checks:
+      - {name: 'Check Nginx availability', id: 'NGINX', http: 'http://127.0.0.1', method: 'GET', interval: '10s', timeout: '1s'}

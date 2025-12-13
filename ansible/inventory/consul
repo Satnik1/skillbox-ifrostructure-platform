@@ -1,0 +1,13 @@
+[consul_instances]
+158.160.121.64 consul_bind_address=192.168.10.37 consul_client_address="192.168.10.37 127.0.0.1" consul_node_role=server consul_bootstrap_expect=true
+158.160.108.55 consul_bind_address=192.168.10.34 consul_client_address="192.168.10.34 127.0.0.1" consul_node_role=server consul_bootstrap_expect=true
+158.160.110.139 consul_bind_address=192.168.10.28 consul_client_address="192.168.10.28 127.0.0.1" consul_node_role=server consul_bootstrap_expect=true
+89.169.154.146 consul_bind_address=192.168.10.3 consul_client_address="192.168.10.3 127.0.0.1" consul_node_role=client consul_enable_local_script_checks=true
+46.21.244.30 consul_bind_address=192.168.10.16 consul_client_address="0.0.0.0" consul_node_role=client
+
+[nginx]
+89.169.154.146
+46.21.244.30
+
+[all:vars]
+ansible_user=ubuntu

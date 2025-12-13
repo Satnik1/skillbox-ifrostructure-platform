@@ -1,4 +1,4 @@
-- hosts: all
+- hosts: nginx
   become: yes
   roles:
     - ansible-role-docker-7.0.0
