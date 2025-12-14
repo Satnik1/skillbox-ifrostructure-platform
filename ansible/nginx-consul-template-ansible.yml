@@ -1,6 +1,6 @@
 ---
 - name: Configuring Nginx
-  hosts: 46.21.244.30
+  hosts: 178.154.222.154
   become: true
   become_user: root
   tasks:
